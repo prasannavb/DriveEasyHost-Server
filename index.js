@@ -18,6 +18,7 @@ const {PastBookingModel}=require("./Models/PastBookingModel");
 const { CarMetaData } = require('./Models/CarMetaData');
 const { ReviewModel } = require('./Models/ReviewModel');
 const {UserModel}=require('./Models/UserModel')
+const {DescriptionModel}=require('./Models/CarDescription')
 
 //Functions
 const xlsx=require('xlsx');
@@ -88,7 +89,7 @@ app.post("/findUser",async(req,res)=>{
 //Add cars
 app.post("/AddCars",async(req,res)=>
 {
-    const { sid,car_no,img,name,year,fuel,make,model,type,price,location}=req.body
+    const { sid,car_no,img,name,year,fuel,make,model,type,price,location,desc}=req.body
     const data=await CarModel.find({car_no})
     if(data.length>0)
     {
@@ -97,6 +98,7 @@ app.post("/AddCars",async(req,res)=>
     else
     {
       await CarModel.insertMany({sid:sid,car_no:car_no,img:img,name:name.charAt(0).toUpperCase()+name.slice(1),year:year,fuel:fuel,make:make.charAt(0).toUpperCase()+make.slice(1),model:model.charAt(0).toUpperCase()+model.slice(1),type:type.charAt(0).toUpperCase()+type.slice(1),price:price,ratings:"0",location:location.charAt(0).toUpperCase()+location.slice(1),list_start:"--",list_drop:"--",isverified:false})
+      await DescriptionModel.insertMany({car_no:car_no,description:desc})
       res.send({status:"Successfully registered",action:true})
     }
 })
