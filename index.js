@@ -60,7 +60,7 @@ app.use(express.json());
       else
       {
         const acc = await auth.createUser({email,password});
-        const sid = acc.sid;
+        const sid = acc.uid;
         await SellerModel.insertMany({sid:String(sid),name:name.charAt(0).toUpperCase()+name.slice(1),email:email,password:password,phone:phone,location:location.charAt(0).toUpperCase()+location.slice(1),gender:'',address:''})
         res.send({status:"Profile Created Successfully",action:true})  
       }
